@@ -11,8 +11,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+    $middleware->alias([
+        'is.admin' => \App\Http\Middleware\IsAdmin::class,
+        'role.redirect' => \App\Http\Middleware\RoleRedirect::class,
+    ]);
     })
+    
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

@@ -15,6 +15,14 @@
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
+
+                        {{-- TAMBAHKAN BLOK INI --}}
+                        @if (auth()->user()->isAdmin())
+                            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                                {{ __('Admin Panel') }}
+                            </x-nav-link>
+                        @endif
+                        {{-- SAMPAI SINI --}}
                     @else
                         <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                             {{ __('Home') }}

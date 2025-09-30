@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -57,5 +58,14 @@ class User extends Authenticatable
             ->take(2)
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    /**
+     * Cek apakah user memiliki peran admin.
+     * @return bool
+     */
+    public function isAdmin(): bool // <-- 2. TAMBAHKAN METHOD INI
+    {
+        return $this->role === 'admin';
     }
 }

@@ -3,33 +3,39 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Category; // <-- Import Category
+use App\Models\Product;  // <-- Import Product
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Schema; // <-- 1. JANGAN LUPA IMPORT SCHEMA
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // 2. Matikan pengecekan foreign key
+        // Matikan pengecekan foreign key
         Schema::disableForeignKeyConstraints();
 
+        // Kosongkan semua tabel yang akan diisi
         User::truncate();
-        // Anda juga bisa truncate tabel lain di sini jika perlu
-        // \App\Models\Category::truncate();
-        // \App\Models\Product::truncate();
+        Category::truncate();
+        Product::truncate();
 
-        // 3. Nyalakan kembali pengecekan foreign key
+        // Nyalakan kembali pengecekan foreign key
         Schema::enableForeignKeyConstraints();
 
-
-        // 4. Lanjutkan proses seeding seperti biasa
+        // Buat user admin dan user biasa
         User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
-            'password' => bcrypt('admin'),
+            'password' => bcrypt('admin'), // Sebaiknya ganti dengan password yang lebih aman
             'role' => 'admin',
         ]);
-
         User::factory(10)->create();
+
+        // === PANGGIL SEEDER LAINNYA DI SINI ===
+        $this->call([
+            CategorySeeder::class, // Jalankan ini dulu untuk membuat kategori
+            ProductSeeder::class,  // Baru jalankan ini untuk membuat produk
+        ]);
     }
 }

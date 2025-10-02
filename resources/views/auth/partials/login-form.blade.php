@@ -1,11 +1,3 @@
-<x-guest-layout>
-    {{-- Logo & Welcome Text --}}
-    <div class="text-center mb-10">
-
-        <h1 class="text-3xl font-bold text-gray-800">Welcome</h1>
-
-    </div>
-
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
@@ -70,4 +62,3 @@
             </p>
         </div>
     </form>
-</x-guest-layout>

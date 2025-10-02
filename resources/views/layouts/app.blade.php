@@ -32,5 +32,18 @@
                 {{ $slot }}
             </main>
         </div>
+
+        {{-- ============================== --}}
+        {{--        MODAL LOGIN             --}}
+        {{-- ============================== --}}
+        <x-modal show="loginModalOpen" @close="loginModalOpen = false">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold mb-4">Masuk</h2>
+                @include('auth.partials.login-form')
+            </div>
+        </x-modal>
+
+        {{-- Pastikan @vite ada sebelum body ditutup jika belum ada --}}
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
     </body>
 </html>

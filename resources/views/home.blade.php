@@ -103,7 +103,7 @@
                 {{-- Ini adalah bagian untuk gambar ilustrasi. Anda bisa menggantinya dengan gambar asli. --}}
                 {{-- Untuk sementara, kita pakai placeholder atau ilustrasi CSS --}}
                 <div class="relative w-full h-80 flex items-center justify-center">
-                    <img src="https://via.placeholder.com/600x400/fff/000?text=Hero+Image+Placeholder" alt="Hero Illustration" class="max-w-full h-auto rounded-lg shadow-2xl">
+                    <img src="{{ asset('storage/images/hero-illustration.png') }}" alt="Hero Illustration" class="max-w-full h-auto">
                     {{-- Alternatif jika punya gambar asli yang transparan dan mau seperti desain: --}}
                     {{-- <img src="{{ asset('storage/image/hero-illustration.png') }}" alt="Shopping Illustration" class="absolute inset-0 w-full h-full object-contain"> --}}
                 </div>

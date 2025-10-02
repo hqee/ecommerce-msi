@@ -12,28 +12,29 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Matikan pengecekan foreign key
-        Schema::disableForeignKeyConstraints();
+        // // Matikan pengecekan foreign key
+        // Schema::disableForeignKeyConstraints();
 
-        // Kosongkan semua tabel yang akan diisi
-        User::truncate();
-        Category::truncate();
-        Product::truncate();
+        // // Kosongkan semua tabel yang akan diisi
+        // User::truncate();
+        // Category::truncate();
+        // Product::truncate();
 
-        // Nyalakan kembali pengecekan foreign key
-        Schema::enableForeignKeyConstraints();
+        // // Nyalakan kembali pengecekan foreign key
+        // Schema::enableForeignKeyConstraints();
 
-        // Buat user admin dan user biasa
-        User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('admin'), // Sebaiknya ganti dengan password yang lebih aman
-            'role' => 'admin',
-        ]);
-        User::factory(10)->create();
+        // // Buat user admin dan user biasa
+        // User::factory()->create([
+        //     'name' => 'Admin User',
+        //     'email' => 'admin@example.com',
+        //     'password' => bcrypt('admin'), 
+        //     'role' => 'admin',
+        // ]);
+        // User::factory(10)->create();
 
-        // === PANGGIL SEEDER LAINNYA DI SINI ===
+        // // === PANGGIL SEEDER LAINNYA DI SINI ===
         $this->call([
+            AdminUserSeeder::class, // Seeder untuk user admin dan user biasa
             CategorySeeder::class, // Jalankan ini dulu untuk membuat kategori
             ProductSeeder::class,  // Baru jalankan ini untuk membuat produk
         ]);

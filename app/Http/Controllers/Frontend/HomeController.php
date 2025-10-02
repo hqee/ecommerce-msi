@@ -3,17 +3,30 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Product;
 use App\Models\Category;
+use App\Models\Product;
+use Illuminate\Http\Request; // <-- 1. Jangan lupa import Request
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request) // <-- 2. Tambahkan Request $request
     {
-        $products = Product::with('category')->latest()->paginate(8);
-        $categories = Category::limit(5)->get(); // Ambil 5 kategori teratas
+        // Mulai query produk dengan relasi kategori
+        $query = Product::with('category');
 
-        return view('home', compact('products', 'categories')); // Kirimkan kategori juga
+        // 3. Cek apakah ada parameter 'category' di URL
+        if ($request->has('category')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('slug', $request->category);
+            });
+        }
+        
+        // Ambil hasil query yang sudah difilter (jika ada)
+        // withQueryString() penting agar paginasi tetap membawa filter
+        $products = $query->latest()->paginate(8)->withQueryString();
+
+        $categories = Category::all();
+
+        return view('home', compact('products', 'categories'));
     }
 }

@@ -27,13 +27,12 @@
             <header class="flex justify-between items-center p-6 bg-white border-b border-gray-200">
                 {{-- Kiri: Judul Halaman --}}
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-800">Good Morning, {{ Auth::user()->name }}!</h1>
-                    <p class="text-sm text-gray-500">Here's what's happening with your store today</p>
+                    <h1 class="text-2xl font-bold text-gray-800">Dashboard Admin</h1>
                 </div>
 
                 {{-- Kanan: Tanggal & Dropdown User --}}
                 <div class="flex items-center space-x-4">
-                    <span class="text-sm text-gray-600">{{ now()->format('d M Y') }}</span>
+                    {{-- <span class="text-sm text-gray-600">{{ now()->format('d M Y') }}</span> --}}
 
                     {{-- Dropdown User Dimulai di Sini --}}
                     <div x-data="{ open: false }" class="relative">
@@ -55,6 +54,11 @@
                                 <div class="text-xs text-gray-500 truncate">{{ Auth::user()->email }}</div>
                             </div>
                             <div class="border-t border-gray-100"></div>
+
+                            {{-- TAMBAHKAN LINK INI --}}
+                            <a href="{{ route('home') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Kembali ke Home
+                            </a>
 
                             {{-- Link Profile --}}
                             <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">

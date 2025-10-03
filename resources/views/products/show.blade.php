@@ -70,8 +70,19 @@
                                     <p class="text-lg font-bold text-gray-800">Rp{{ number_format($product->price, 0, ',', '.') }}</p>
                                 </div>
                                 <div class="grid grid-cols-2 gap-3">
-                                    <button class="w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition-colors">+ Keranjang</button>
-                                    <button class="w-full bg-green-50 text-green-600 font-bold py-3 rounded-lg hover:bg-green-100 border border-green-600 transition-colors">Beli Langsung</button>
+                                    {{-- Tombol + Keranjang sekarang ada di dalam form --}}
+                                    <form action="{{ route('cart.add', $product) }}" method="POST">
+                                        @csrf
+                                        {{-- Anda bisa menambahkan input hidden untuk quantity jika diperlukan --}}
+                                        {{-- <input type="hidden" name="quantity" value="1"> --}}
+                                        <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition-colors">
+                                            + Keranjang
+                                        </button>
+                                    </form>
+
+                                    <button class="w-full bg-green-50 text-green-600 font-bold py-3 rounded-lg hover:bg-green-100 border border-green-600 transition-colors">
+                                        Beli Langsung
+                                    </button>
                                 </div>
                             </div>
                         </div>

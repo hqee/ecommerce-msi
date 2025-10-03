@@ -2,32 +2,34 @@
     @include('layouts.partials.frontend-navbar')
 
     {{-- B. HERO SECTION                --}}
-    <section class="bg-gradient-to-r from-blue-500 to-indigo-600 py-20 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between">
-            <div class="md:w-1/2 text-white text-center md:text-left mb-10 md:mb-0 relative z-10">
-                <h1 class="text-5xl font-extrabold leading-tight">
-                    Shopping And <br> Department Store.
-                </h1>
-                <p class="mt-4 text-lg max-w-md">
-                    Shopping is a bit of a relaxing hobby for me, which is sometimes troubling for the bank balance.
-                </p>
-                <a href="#" class="mt-8 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg transition duration-300">
-                    Learn More
-                </a>
-            </div>
-            <div class="md:w-1/2 relative z-10">
-                {{-- Ini adalah bagian untuk gambar ilustrasi. Anda bisa menggantinya dengan gambar asli. --}}
-                {{-- Untuk sementara, kita pakai placeholder atau ilustrasi CSS --}}
-                <div class="relative w-full h-80 flex items-center justify-center">
-                    <img src="{{ asset('storage/images/hero-illustration.png') }}" alt="Hero Illustration" class="max-w-full h-auto">
-                    {{-- Alternatif jika punya gambar asli yang transparan dan mau seperti desain: --}}
-                    {{-- <img src="{{ asset('storage/image/hero-illustration.png') }}" alt="Shopping Illustration" class="absolute inset-0 w-full h-full object-contain"> --}}
+
+    
+    <section class="py-10">
+        <div 
+            x-data="{ activeSlide: 1, totalSlides: 3, autoplay: null }"
+            x-init="autoplay = setInterval(() => { activeSlide = (activeSlide === totalSlides) ? 1 : activeSlide + 1 }, 5000)"
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative rounded-lg overflow-hidden shadow-lg h-[400px] md:h-[500px]">
+
+            {{-- SLIDE 1 --}}
+            <div x-show="activeSlide === 1" x-transition:enter="transition ease-out duration-1000" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-1000" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0">
+                <div class="h-full w-full flex items-center justify-center relative">
+                    <img src="{{ asset('storage/images/Frame 231.png') }}" class="absolute inset-0 w-full h-full object-cover">
                 </div>
             </div>
+            {{-- SLIDE 2 --}}
+            <div x-show="activeSlide === 2" x-transition:enter="transition ease-out duration-1000" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-1000" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0">
+                <div class="h-full w-full flex items-center justify-center relative">
+                    <img src="{{ asset('storage/images/Frame 232.png') }}" class="absolute inset-0 w-full h-full object-cover">
+                </div>
+            </div>
+            {{-- SLIDE 3 --}}
+            <div x-show="activeSlide === 3" x-transition:enter="transition ease-out duration-1000" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-1000" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute inset-0">
+                <div class="h-full w-full flex items-center justify-center relative">
+                    <img src="{{ asset('storage/images/Frame 233.png') }}" class="absolute inset-0 w-full h-full object-cover">
+                </div>
+            </div>
+
         </div>
-        {{-- Bentuk-bentuk abstrak di background (opsional, bisa diganti dengan gambar) --}}
-        <div class="absolute bottom-0 right-0 transform translate-x-1/4 translate-y-1/4 w-96 h-96 bg-blue-400 opacity-20 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
-        <div class="absolute top-0 left-0 transform -translate-x-1/4 -translate-y-1/4 w-72 h-72 bg-purple-400 opacity-20 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
     </section>
 
     {{-- ============================== --}}
@@ -97,9 +99,12 @@
                             </div>
 
                             {{-- Tombol Add to Cart --}}
-                            <button class="mt-4 w-full bg-white border border-gray-300 text-gray-700 font-semibold py-2 rounded-md hover:bg-gray-50 transition">
-                                Add to Cart
-                            </button>
+                            <form action="{{ route('cart.add', $product) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="mt-4 w-full bg-white border border-gray-300 text-gray-700 font-semibold py-2 rounded-md hover:bg-gray-50 transition">
+                                    Add to Cart
+                                </button>
+                            </form>
                         </div>
                     </div>
                 @empty

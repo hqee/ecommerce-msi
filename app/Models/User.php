@@ -60,6 +60,16 @@ class User extends Authenticatable
             ->implode('');
     }
 
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
     /**
      * Cek apakah user memiliki peran admin.
      * @return bool

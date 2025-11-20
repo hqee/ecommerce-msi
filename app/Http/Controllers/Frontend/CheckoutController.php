@@ -20,12 +20,16 @@ class CheckoutController extends Controller
         try {
             DB::beginTransaction();
 
+            // 1. Cek Stok Dulu
             foreach ($cart->items as $item) {
-                if ($item->product->stock < $item->quantity) {
-                    throw new \Exception('Stok untuk produk "' . $item->product->name . '" tidak mencukupi.');
+                // Pastikan ambil stok terbaru dari DB, bukan dari cache relasi
+                $freshProduct = $item->product->fresh(); 
+                if ($freshProduct->stock < $item->quantity) {
+                    throw new \Exception('Stok untuk produk "' . $freshProduct->name . '" tidak mencukupi. Sisa stok: ' . $freshProduct->stock);
                 }
             }
-
+            
+            // 2. Buat Order Utama
             $order = $user->orders()->create([
                 'total_amount' => $cart->items->sum(function($item) {
                     return $item->quantity * $item->product->price;
@@ -33,25 +37,31 @@ class CheckoutController extends Controller
                 'status' => 'pending',
             ]);
 
+            // 3. Pindahkan Item & Kurangi Stok
             foreach ($cart->items as $item) {
                 $order->items()->create([
                     'product_id' => $item->product_id,
-                    'quantity' => $item->quantity,
-                    'price' => $item->product->price,
+                    'quantity'   => $item->quantity,
+                    'price'      => $item->product->price,
+                    'subtotal'   => $item->quantity * $item->product->price,
                 ]);
+
+                // Kurangi stok
                 $item->product->decrement('stock', $item->quantity);
             }
-dd('Pengecekan stok selesai'); 
+
+            // 4. Hapus Keranjang
             $cart->items()->delete();
             
+            // 5. Simpan Permanen
             DB::commit();
 
             return redirect()->route('home')->with('success', 'Pesanan Anda berhasil dibuat!');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', $e->getMessage());
+            // Ini akan mengirim pesan error ke View yang baru kita update
+            return back()->with('error', 'Gagal Checkout: ' . $e->getMessage());
         }
-        
     }
 }

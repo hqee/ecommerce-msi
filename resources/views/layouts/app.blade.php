@@ -13,6 +13,8 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -45,5 +47,30 @@
 
         {{-- Pastikan @vite ada sebelum body ditutup jika belum ada --}}
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        {{-- Script SweetAlert --}}
+    <script>
+        // Cek apakah ada session success
+        @if (session('success'))
+            Swal.fire({
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'Oke',
+                confirmButtonColor: '#10B981' // Warna hijau Tailwind
+            });
+        @endif
+
+        // Cek apakah ada session error
+        @if (session('error'))
+            Swal.fire({
+                title: 'Gagal!',
+                text: "{{ session('error') }}",
+                icon: 'error',
+                confirmButtonText: 'Tutup',
+                confirmButtonColor: '#EF4444' // Warna merah Tailwind
+            });
+        @endif
+    </script>
     </body>
 </html>

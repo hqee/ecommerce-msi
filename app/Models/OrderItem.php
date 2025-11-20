@@ -2,28 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
 {
-    use HasFactory;
+    public $timestamps = false; // <--- WAJIB ADA jika tabel tidak punya created_at/updated_at
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'order_id',
-        'product_id',
-        'quantity',
-        'price',
+        'order_id', 
+        'product_id', 
+        'quantity', 
+        'price', 
+        'subtotal' // <--- WAJIB ADA
     ];
-
-    /**
-     * Model ini tidak memiliki updated_at, jadi kita matikan.
-     * created_at akan tetap dibuat.
-     */
-    const UPDATED_AT = null;
 }

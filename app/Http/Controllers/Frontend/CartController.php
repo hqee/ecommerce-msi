@@ -44,7 +44,7 @@ class CartController extends Controller
     // Method untuk meng-update jumlah produk
     public function update(Request $request, CartItem $cartItem)
     {
-        dd($request->all()); 
+        // dd($request->all()); 
         
         $request->validate(['quantity' => 'required|integer|min:1']);
         $cartItem->update(['quantity' => $request->quantity]);

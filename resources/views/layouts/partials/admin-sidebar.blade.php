@@ -1,6 +1,7 @@
 <aside class="w-64 bg-white shadow-md hidden md:block">
     <div class="p-6">
-        <h1 class="text-2xl font-bold text-gray-800">Tuku.co</h1>
+        <h1 class="text-2xl font-bold text-gray-800">Jaya Gemilang Shop
+        </h1>
     </div>
     <nav class="mt-6">
         <div>

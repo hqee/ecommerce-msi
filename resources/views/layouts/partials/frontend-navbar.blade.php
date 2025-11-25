@@ -3,7 +3,7 @@
             {{-- Logo --}}
             <div class="flex-shrink-0">
                 <a href="{{ route('home') }}" class="text-3xl font-bold text-gray-800">
-                    Tuku.co {{-- Ganti dengan gambar logo Anda --}}
+                    Jaya Gemilang 
                 </a>
             </div>
 

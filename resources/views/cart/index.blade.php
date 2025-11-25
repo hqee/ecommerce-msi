@@ -88,11 +88,10 @@
                             </div>
                         </div>
 
-                        <form action="{{ route('checkout.process') }}" method="POST">
+                        <a href="{{ route('checkout.index') }}" class="block text-center mt-6 w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition-colors text-lg">
+                            Lanjut ke Pembayaran
+                        </a>
                         @csrf
-                        <button type="submit" class="mt-6 w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700 transition-colors text-lg">
-                            Proceed to checkout
-                        </button>
                     </form>
 
                     </div>

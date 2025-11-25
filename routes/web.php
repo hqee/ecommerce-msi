@@ -8,6 +8,9 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Frontend\ProductController as FrontendProductController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Frontend\OrderController as FrontendOrderController;
+use App\Http\Controllers\Admin\CategoryController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -17,6 +20,8 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'is.admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('products', AdminProductController::class);
+    Route::resource('orders', OrderController::class);
+    Route::resource('categories', CategoryController::class);
 });
 
 Route::middleware('auth')->group(function () {
@@ -28,8 +33,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/cart/update/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+
+    // RUTE RIWAYAT PESANAN
+    Route::get('/my-orders', [FrontendOrderController::class, 'index'])->name('my-orders.index');
+    Route::get('/my-orders/{order}', [FrontendOrderController::class, 'show'])->name('my-orders.show');
 });
 
 Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show');
+
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
 
 require __DIR__.'/auth.php';

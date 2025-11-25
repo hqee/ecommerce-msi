@@ -1,4 +1,4 @@
-    <nav class="bg-white shadow-md py-4">
+    <nav class="bg-white shadow-md py-4 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             {{-- Logo --}}
             <div class="flex-shrink-0">
@@ -19,7 +19,9 @@
                         </button>
                         <div x-show="open" @click.away="open = false" x-transition class="absolute z-20 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
                             @foreach ($categories as $category)
-                                <a href="{{ route('home', ['category' => $category->slug]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{ $category->name }}</a>
+                                <a href="{{ route('home', ['category' => $category->slug]) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    {{ $category->name }}
+                                </a>
                             @endforeach
                         </div>
                     </div>
@@ -59,6 +61,9 @@
                                 <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard Admin</a>
                             @endif
                             <a href="{{ route('home') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Home</a>
+                            <a href="{{ route('my-orders.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Riwayat Pesanan
+                            </a>
                             <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf

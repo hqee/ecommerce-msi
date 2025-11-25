@@ -38,21 +38,30 @@
     <section class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
-            @if (request('category'))
-                @php
-                    $activeCategory = $categories->firstWhere('slug', request('category'));
-                @endphp
-                <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-3xl font-bold text-gray-800">
-                        Kategori: <span class="text-blue-600">{{ $activeCategory->name ?? '' }}</span>
-                    </h2>
-                    <a href="{{ route('home') }}" class="text-sm font-medium text-red-500 hover:underline">
-                        Hapus Filter &times;
+{{-- LOGIKA JUDUL DINAMIS --}}
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-3xl font-bold text-gray-800">
+                    @if (request('category'))
+                        Kategori: <span class="text-blue-600">{{ $categories->firstWhere('slug', request('category'))->name ?? request('category') }}</span>
+                    @elseif (request('search'))
+                        Hasil Pencarian: "<span class="text-blue-600">{{ request('search') }}</span>"
+                    @else
+                        Our Product
+                    @endif
+                </h2>
+
+                {{-- Tombol Reset Filter (Muncul jika sedang search atau filter kategori) --}}
+                @if (request('category') || request('search'))
+                    <a href="{{ route('home') }}" class="text-sm font-medium text-red-500 hover:underline flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        Reset Filter
                     </a>
-                </div>
-            @else
-                <h2 class="text-3xl font-bold text-gray-800 mb-8">Our Product</h2>
-            @endif
+                @endif
+            </div>
+            
+            {{-- GRID PRODUK --}}
+            <div class="grid ...">
+               {{-- ... (looping produk Anda) ... --}}
                         
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @forelse ($products as $product)

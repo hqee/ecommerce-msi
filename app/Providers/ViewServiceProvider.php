@@ -19,7 +19,7 @@ class ViewServiceProvider extends ServiceProvider
         // Perintah ini berarti: "Setiap kali view 'layouts.partials.frontend-navbar' akan di-render..."
         View::composer('layouts.partials.frontend-navbar', function ($view) {
             // "...sertakan variabel 'categories' yang berisi semua data kategori."
-            $view->with('categories', Category::all());
+            $view->with('categories', Category::orderBy('name', 'ASC')->get());
         });
     }
 }

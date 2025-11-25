@@ -9,23 +9,34 @@ use Illuminate\Http\Request; // <-- 1. Jangan lupa import Request
 
 class HomeController extends Controller
 {
-    public function index(Request $request) // <-- 2. Tambahkan Request $request
+    public function index(Request $request)
     {
-        // Mulai query produk dengan relasi kategori
+        // Mulai query
         $query = Product::with('category');
 
-        // 3. Cek apakah ada parameter 'category' di URL
-        if ($request->has('category')) {
+        // 1. Filter Kategori (yang sudah ada)
+        if ($request->has('category') && $request->category != null) {
             $query->whereHas('category', function ($q) use ($request) {
                 $q->where('slug', $request->category);
             });
         }
-        
-        // Ambil hasil query yang sudah difilter (jika ada)
-        // withQueryString() penting agar paginasi tetap membawa filter
-        $products = $query->latest()->paginate(8)->withQueryString();
 
-        $categories = Category::all();
+        // 2. Filter Pencarian (BARU)
+        if ($request->has('search') && $request->search != null) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        // Eksekusi query
+        $products = $query->latest()->paginate(12)->withQueryString();
+        
+        // Ambil kategori untuk dropdown (sebenarnya ini sudah di-handle ViewComposer, 
+        // tapi jika Anda menghapusnya dari ViewComposer, biarkan di sini).
+        // Jika pakai ViewComposer, baris di bawah bisa dihapus.
+        $categories = Category::orderBy('name', 'ASC')->get(); 
 
         return view('home', compact('products', 'categories'));
     }

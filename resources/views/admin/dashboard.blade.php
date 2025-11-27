@@ -4,11 +4,6 @@
     </x-slot>
 
     {{-- 1. Headline & Statistik --}}
-    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-        <h2 class="text-2xl font-bold text-gray-800">👋 “Selamat Datang, {{ Auth::user()->name }}!”</h2>
-        <p class="mt-2 text-gray-600">📊 Pantau penjualan, kelola produk, dan kendalikan toko Anda dengan mudah.</p>
-    </div>
-
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {{-- Card 1: Total Pendapatan --}}
         <div class="bg-white p-6 rounded-lg shadow-md flex items-center justify-between">

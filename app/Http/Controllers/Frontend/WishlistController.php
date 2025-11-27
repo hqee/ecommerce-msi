@@ -9,6 +9,18 @@ use Illuminate\Support\Facades\Auth;
 
 class WishlistController extends Controller
 {
+    // TAMBAHKAN METHOD INI
+    public function index()
+    {
+        // Ambil data wishlist milik user yang login, beserta data produknya
+        $wishlists = Wishlist::where('user_id', Auth::id())
+            ->with('product.category') // Eager load agar ringan
+            ->latest()
+            ->paginate(12);
+
+        return view('frontend.wishlist.index', compact('wishlists'));
+    }
+    
     public function toggle($productId)
     {
         $user = Auth::user();

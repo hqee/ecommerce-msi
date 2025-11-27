@@ -66,14 +66,13 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @forelse ($products as $product)
                     <div class="group relative bg-white border border-gray-200 rounded-lg overflow-hidden">
-                        {{-- Area Gambar & Tombol Wishlist --}}
+                        {{-- Area Gambar --}}
                         <div class="aspect-w-1 aspect-h-1 bg-gray-50 group-hover:opacity-75">
-                            {{-- Link pada gambar sudah tidak diperlukan di sini --}}
                             <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-center object-cover">
                         </div>
 
-                        {{-- Tombol Wishlist (Hati) --}}
-                        <button class="absolute top-3 right-3 bg-white/70 backdrop-blur-sm p-2 rounded-full text-gray-400 hover:text-red-500 transition z-10">
+                        {{-- Tombol Wishlist (Hati) - Diberi z-20 agar bisa diklik --}}
+                        <button class="absolute top-3 right-3 bg-white/70 backdrop-blur-sm p-2 rounded-full text-gray-400 hover:text-red-500 transition z-20">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.5l1.318-1.182a4.5 4.5 0 116.364 6.364L12 21l-7.682-7.682a4.5 4.5 0 010-6.364z"></path></svg>
                         </button>
 
@@ -83,9 +82,9 @@
                             <div class="flex justify-between items-start">
                                 <div>
                                     <h3 class="text-md font-semibold text-gray-800">
-                                        {{-- PERUBAHAN UTAMA: Perbaiki href di sini --}}
+                                        {{-- Link Utama (Overlay) --}}
                                         <a href="{{ route('products.show', $product->slug) }}">
-                                            <span aria-hidden="true" class="absolute inset-0"></span>
+                                            <span aria-hidden="true" class="absolute inset-0 z-10"></span>
                                             {{ $product->name }}
                                         </a>
                                     </h3>
@@ -99,18 +98,19 @@
                             {{-- Rating Bintang --}}
                             <div class="flex items-center mt-3">
                                 <div class="flex items-center">
-                                    {{-- SVG untuk 5 bintang --}}
                                     @for ($i = 0; $i < 5; $i++)
-                                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
                                     @endfor
                                 </div>
                                 <p class="ml-2 text-sm text-gray-500">(121)</p>
                             </div>
 
                             {{-- Tombol Add to Cart --}}
-                            <form action="{{ route('cart.add', $product) }}" method="POST">
+                            {{-- PERBAIKAN: Menambahkan class 'relative' dan 'z-20' agar berada di atas link overlay --}}
+                            <form action="{{ route('cart.add', $product) }}" method="POST" class="relative z-20">
                                 @csrf
-                                <button type="submit" class="mt-4 w-full bg-white border border-gray-300 text-gray-700 font-semibold py-2 rounded-md hover:bg-gray-50 transition">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="mt-4 w-full block text-center bg-white border border-gray-300 text-gray-700 font-semibold py-2 rounded-md hover:bg-gray-50 transition cursor-pointer">
                                     Add to Cart
                                 </button>
                             </form>

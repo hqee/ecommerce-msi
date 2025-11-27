@@ -14,13 +14,13 @@ class ProductSeeder extends Seeder
         $electronicsCategory = Category::where('slug', 'electronics')->first();
 
         Product::create([
-            'category_id' => $electronicsCategory->id,
-            'name' => 'Smartphone',
-            'slug' => 'smartphone',
-            'description' => 'Latest model smartphone with advanced features',
-            'price' => 15000000,
-            'stock' => 50,
-            'image' => 'images/products/hp.png',
+            // 'category_id' => $electronicsCategory->id,
+            // 'name' => 'Smartphone',
+            // 'slug' => 'smartphone',
+            // 'description' => 'Latest model smartphone with advanced features',
+            // 'price' => 15000000,
+            // 'stock' => 50,
+            // 'image' => 'images/products/hp.png',
         ]);
     }
 }

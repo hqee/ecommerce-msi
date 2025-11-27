@@ -1,8 +1,5 @@
 <x-app-layout>
     @include('layouts.partials.frontend-navbar')
-
-    {{-- B. HERO SECTION                --}}
-
     
     <section class="py-10">
         <div 
@@ -38,7 +35,7 @@
     <section class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
-{{-- LOGIKA JUDUL DINAMIS --}}
+            {{-- LOGIKA JUDUL DINAMIS --}}
             <div class="flex items-center justify-between mb-8">
                 <h2 class="text-3xl font-bold text-gray-800">
                     @if (request('category'))
@@ -46,11 +43,11 @@
                     @elseif (request('search'))
                         Hasil Pencarian: "<span class="text-blue-600">{{ request('search') }}</span>"
                     @else
-                        Our Product
+                        Etalase Produk
                     @endif
                 </h2>
 
-                {{-- Tombol Reset Filter (Muncul jika sedang search atau filter kategori) --}}
+                {{-- Tombol Reset Filter --}}
                 @if (request('category') || request('search'))
                     <a href="{{ route('home') }}" class="text-sm font-medium text-red-500 hover:underline flex items-center">
                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -60,26 +57,37 @@
             </div>
             
             {{-- GRID PRODUK --}}
-            <div class="grid ...">
-               {{-- ... (looping produk Anda) ... --}}
-                        
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @forelse ($products as $product)
-                    <div class="group relative bg-white border border-gray-200 rounded-lg overflow-hidden">
+                    {{-- CARD PRODUK (Hanya 1 Blok) --}}
+                    <div class="group relative bg-white border border-gray-200 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full">
+                        
                         {{-- Area Gambar --}}
-                        <div class="aspect-w-1 aspect-h-1 bg-gray-50 group-hover:opacity-75">
-                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-center object-cover">
+                        <div class="aspect-w-1 aspect-h-1 bg-gray-50 group-hover:opacity-75 relative overflow-hidden">
+                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-50 object-cover object-center">
                         </div>
 
-                        {{-- Tombol Wishlist (Hati) - Diberi z-20 agar bisa diklik --}}
-                        <button class="absolute top-3 right-3 bg-white/70 backdrop-blur-sm p-2 rounded-full text-gray-400 hover:text-red-500 transition z-20">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.5l1.318-1.182a4.5 4.5 0 116.364 6.364L12 21l-7.682-7.682a4.5 4.5 0 010-6.364z"></path></svg>
-                        </button>
+                        {{-- TOMBOL WISHLIST (LOVE) --}}
+                        @auth
+                            <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="absolute top-3 right-3 p-2 rounded-full transition z-20 {{ $product->is_favorited ? 'bg-red-50 text-red-500' : 'bg-white/70 text-gray-400 hover:text-red-500' }} backdrop-blur-sm shadow-sm">
+                                    @if($product->is_favorited)
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+                                    @else
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.5l1.318-1.182a4.5 4.5 0 116.364 6.364L12 21l-7.682-7.682a4.5 4.5 0 010-6.364z"></path></svg>
+                                    @endif
+                                </button>
+                            </form>
+                        @else
+                            <a href="{{ route('login') }}" class="absolute top-3 right-3 bg-white/70 backdrop-blur-sm p-2 rounded-full text-gray-400 hover:text-red-500 transition z-20 shadow-sm">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.5l1.318-1.182a4.5 4.5 0 116.364 6.364L12 21l-7.682-7.682a4.5 4.5 0 010-6.364z"></path></svg>
+                            </a>
+                        @endauth
 
                         {{-- Area Info Produk --}}
-                        <div class="p-4">
-                            {{-- Baris Nama & Harga --}}
-                            <div class="flex justify-between items-start">
+                        <div class="p-4 flex flex-col flex-grow">
+                            <div class="flex justify-between items-start mb-4">
                                 <div>
                                     <h3 class="text-md font-semibold text-gray-800">
                                         {{-- Link Utama (Overlay) --}}
@@ -90,35 +98,29 @@
                                     </h3>
                                     <p class="mt-1 text-sm text-gray-500">{{ $product->category->name }}</p>
                                 </div>
+                            
                                 <p class="text-md font-medium text-gray-900">
                                     Rp{{ number_format($product->price, 0, ',', '.') }}
                                 </p>
                             </div>
 
-                            {{-- Rating Bintang --}}
-                            <div class="flex items-center mt-3">
-                                <div class="flex items-center">
-                                    @for ($i = 0; $i < 5; $i++)
-                                        <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                    @endfor
-                                </div>
-                                <p class="ml-2 text-sm text-gray-500">(121)</p>
-                            </div>
-
                             {{-- Tombol Add to Cart --}}
-                            {{-- PERBAIKAN: Menambahkan class 'relative' dan 'z-20' agar berada di atas link overlay --}}
-                            <form action="{{ route('cart.add', $product) }}" method="POST" class="relative z-20">
+                            <form action="{{ route('cart.add', $product) }}" method="POST" class="relative z-20 mt-auto">
                                 @csrf
                                 <input type="hidden" name="quantity" value="1">
-                                <button type="submit" class="mt-4 w-full block text-center bg-white border border-gray-300 text-gray-700 font-semibold py-2 rounded-md hover:bg-gray-50 transition cursor-pointer">
-                                    Add to Cart
+                                <button type="submit" class="w-full block text-center bg-white border border-gray-300 text-gray-700 font-semibold py-2 rounded-md hover:bg-gray-50 hover:border-gray-400 hover:text-gray-900 transition cursor-pointer shadow-sm">
+                                    + Keranjang
                                 </button>
                             </form>
                         </div>
                     </div>
                 @empty
-                    <div class="col-span-full text-center text-gray-500">
-                        <p>Maaf, belum ada produk yang tersedia saat ini.</p>
+                    <div class="col-span-full py-12 text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                        </svg>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">Tidak ada produk</h3>
+                        <p class="mt-1 text-sm text-gray-500">Maaf, belum ada produk yang tersedia saat ini.</p>
                     </div>
                 @endforelse
             </div>

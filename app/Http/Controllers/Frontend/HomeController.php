@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request; // <-- 1. Jangan lupa import Request
+use App\Models\Wishlist;
 
 class HomeController extends Controller
 {
@@ -13,6 +14,13 @@ class HomeController extends Controller
     {
         // Mulai query
         $query = Product::with('category');
+
+        if (auth()->check()) {
+        // Menambahkan atribut 'is_favorited' (true/false) ke setiap produk
+        $query->withExists(['wishlists as is_favorited' => function ($q) {
+            $q->where('user_id', auth()->id());
+        }]);
+    }
 
         // 1. Filter Kategori (yang sudah ada)
         if ($request->has('category') && $request->category != null) {
@@ -32,6 +40,7 @@ class HomeController extends Controller
 
         // Eksekusi query
         $products = $query->latest()->paginate(12)->withQueryString();
+        
         
         // Ambil kategori untuk dropdown (sebenarnya ini sudah di-handle ViewComposer, 
         // tapi jika Anda menghapusnya dari ViewComposer, biarkan di sini).

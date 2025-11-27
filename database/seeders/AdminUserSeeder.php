@@ -15,7 +15,7 @@ class AdminUserSeeder extends Seeder
     {
         // 1. User Admin Uji Coba
         User::create([
-            'name' => 'Haqi Admin',
+            'name' => 'Admin',
             'email' => 'admin@example.com',
             'password' => bcrypt('admin123'), // Password: password
             'role' => 'admin', // Role diset sebagai 'admin'
@@ -23,7 +23,7 @@ class AdminUserSeeder extends Seeder
 
         // 2. User Biasa Uji Coba
         User::create([
-            'name' => 'Haqi',
+            'name' => 'User',
             'email' => 'user@example.com',
             'password' => bcrypt('user123'), // Password: user123
             'role' => 'user', // Role diset sebagai 'user'

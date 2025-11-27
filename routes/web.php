@@ -11,6 +11,7 @@ use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Frontend\OrderController as FrontendOrderController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Frontend\WishlistController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -37,6 +38,8 @@ Route::middleware('auth')->group(function () {
     // RUTE RIWAYAT PESANAN
     Route::get('/my-orders', [FrontendOrderController::class, 'index'])->name('my-orders.index');
     Route::get('/my-orders/{order}', [FrontendOrderController::class, 'show'])->name('my-orders.show');
+
+    Route::post('/wishlist/{product}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 });
 
 Route::get('/products/{product:slug}', [FrontendProductController::class, 'show'])->name('products.show');

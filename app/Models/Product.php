@@ -40,4 +40,9 @@ class Product extends Model
         
         return 'https://via.placeholder.com/400x300.png?text=No+Image';
     }
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 }
